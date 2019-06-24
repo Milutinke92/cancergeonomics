@@ -1,59 +1,74 @@
 import click
-import sys
 
-class Config(object):
+from cancergeonomics.helpers import unflatten
+from cancergeonomics.http.client import CGCBaseHttpClient
+from cancergeonomics.resources.file import FileResource
+from cancergeonomics.resources.project import ProjectResource
 
-    def __init__(self, token):
-        self.token = token
 
-pass_config = click.make_pass_decorator(Config)
+def validate_parameters(ctx, param, value):
+    try:
+        data = dict([k.split('=') for k in value])
+        return unflatten(data)
+    except ValueError:
+        raise click.BadParameter('rolls need to be in format NdM')
 
 @click.group()
 @click.option('--token', type=click.STRING, required=True)
 @click.pass_context
 def cgccli(ctx, token):
-    ctx.obj = Config(token=token)
-    click.echo("test")
+    ctx.obj = {}
+    ctx.obj['api_client'] = CGCBaseHttpClient(token=token)
 
 
 @click.group()
 @click.pass_context
-@pass_config
-def projects(config, token):
-    click.echo(config.token)
-    click.echo("run projeccts")
+def projects(ctx):
+    ctx.obj['project_handler'] = ProjectResource(api_client=ctx.obj['api_client'])
+
 
 @projects.command()
-def list():
-    click.echo("run list")
+@click.pass_context
+def list(ctx):
+    project_handler = ctx.obj['project_handler']
+    for project in project_handler.list():
+        click.echo(project)
 
 
 @click.group()
 @click.pass_context
-@pass_config
-def files(config, token):
-    click.echo(config.token)
-    click.echo("run files")
-    pass
+def files(ctx):
+    ctx.obj['file_handler'] = FileResource(api_client=ctx.obj['api_client'])
+
+@files.command()
+@click.option('--project', 'project_id', required=True)
+@click.pass_context
+def list(ctx, project_id):
+    file_handler = ctx.obj['file_handler']
+    for file in file_handler.list(query_params={"project": project_id}):
+        click.echo(file)
+
 
 @files.command()
 @click.option('--file', 'file_id', required=True)
-def stat(file_id):
-    click.echo("run stat")
-    click.echo(file_id)
+@click.pass_context
+def stat(ctx, file_id):
+    file_handler = ctx.obj['file_handler']
+    click.echo(file_handler.stat(file_id))
 
 @files.command()
 @click.option('--file', 'file_id', required=True)
-@click.argument()
-def update(file_id):
-    click.echo("run update")
-
+@click.argument('update_fields', nargs=-1, required=False, callback=validate_parameters)
+@click.pass_context
+def update(ctx, file_id, update_fields):
+    file_handler = ctx.obj['file_handler']
+    file_handler.update(file_id, data=update_fields)
 
 @files.command()
 @click.option('--file', 'file_id', required=True)
 def download(file_id):
-    click.echo("run download")
-    click.echo("file_id")
+    pass
+
 
 cgccli.add_command(projects)
 cgccli.add_command(files)
