@@ -1,4 +1,5 @@
 import json
+import logging
 import platform
 from urllib.parse import urljoin
 
@@ -7,6 +8,8 @@ import requests
 
 from cancergeonomics.http.download import Download
 from cancergeonomics.http.error_handlers import handle_error_response
+
+logger = logging.getLogger(__name__)
 
 CLIENT_INFO = {
     'version': pkg_resources.get_distribution('cancergeonomics').version,
@@ -57,13 +60,7 @@ class CGCBaseHttpClient(object):
         if not resp.ok:
             handle_error_response(resp)
 
-        return self.process_response(resp)
-
-    def process_response(self, resp):
-        data = resp.json()
-        if 'items' in data:
-            return data['items']
-        return data
+        return resp.json()
 
     def get(self, url, headers=None, query_params=None, data=None, append_url=True):
         return self._request('GET', url, headers, query_params, data, append_url)
@@ -81,6 +78,7 @@ class CGCBaseHttpClient(object):
         return self._request('DELETE', url, headers, query_params, data, append_url)
 
     def download(self, url, file_path, stream=True, chunk_size=8192):
+        logger.info("Download started to %s", file_path)
         download_obj = Download(url, file_path, stream, chunk_size)
         return download_obj.run_download()
 

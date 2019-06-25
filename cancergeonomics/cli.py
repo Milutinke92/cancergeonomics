@@ -46,10 +46,11 @@ def files(ctx):
     ctx.obj['file_handler'] = FileResource(api_client=ctx.obj['api_client'])
 
 @files.command()
-@click.option('--project', 'project_id', required=True)
-def list(ctx, **query_params):
+@click.option('--project', 'project', required=True)
+@click.pass_context
+def list(ctx, **kwargs):
     file_handler = ctx.obj['file_handler']
-    for file in file_handler.list(query_params=query_params):
+    for file in file_handler.list(query_params=kwargs):
         click.echo(file)
 
 

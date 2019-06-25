@@ -2,8 +2,7 @@ from cancergeonomics.resources.base import Resource
 
 
 class ProjectResource(Resource):
+    RESOURCE_ROOT_URL = 'projects'
 
     def list(self, query_params=None):
-        res = self.api_client.get('projects', query_params=query_params)
-        return res
-
+        return self.filter(query_params=query_params)

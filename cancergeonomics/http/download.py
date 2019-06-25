@@ -11,6 +11,7 @@ class Download(object):
     """
 
     def __init__(self, url, file_path, stream=True, chunk_size=8192):
+        super(Download, self).__init__()
         self.url = url
         self.file_path = file_path
         self.stream = stream
@@ -30,14 +31,14 @@ class Download(object):
             return False
         return True
 
-    def download(self, file_path=None):
+    def download(self):
         """
         Method for downloading and storing data on disk with given file_path
         :param file_path:
         :return file_path as string:
         """
 
-        file_path = file_path if file_path else self.file_path
+        file_path = self.file_path
 
         if os.path.isdir(file_path):
             local_filename = self.url.split('/')[-1]
@@ -55,10 +56,9 @@ class Download(object):
 
         return file_path
 
-    def run_download(self, file_path=None):
+    def run_download(self):
         """
         Method for checking if Content is downlodable and runing actual download
-        :param file_path:
         :return file_path as string:
         """
         if not self.is_downloadable():
@@ -66,4 +66,7 @@ class Download(object):
                 "Provided URL {} doesn't containt downloadable content".format(self.url)
             )
 
-        return self.download(file_path)
+        return self.download()
+
+    def run(self):
+        self.run_download()
