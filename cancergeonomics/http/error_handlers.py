@@ -3,10 +3,8 @@ from cancergeonomics.http.exceptions import BaseCGCHttpException
 
 def handle_error_response(resp):
     """
-    List of all HTTP Status Codes and Internal status codes: https://docs.cancergenomicscloud.org/docs/api-status-codes
-
-    :param resp:
-    :return:
+    List of all HTTP Status Codes and Internal status codes:
+    https://docs.cancergenomicscloud.org/docs/api-status-codes
     """
     exc_message = {
     }

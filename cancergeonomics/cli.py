@@ -28,10 +28,15 @@ def projects(ctx):
 
 
 @projects.command()
+@click.option('--limit', 'limit', required=False, type=click.IntRange(min=1, max=100), default=25)
+@click.option('--offset', 'offset', required=False, type=click.IntRange(min=0, max=None), default=0)
+@click.option('--name', 'name', required=False, type=str)
+@click.option('--fields', 'fields', required=False, default='_all')
 @click.pass_context
-def list(ctx):
+def list(ctx, **query_params):
+    query_params = {k: v for k, v in query_params.items() if v is not None}
     project_handler = ctx.obj['project_handler']
-    for project in project_handler.list():
+    for project in project_handler.list(query_params=query_params):
         click.echo(project)
 
 
@@ -42,10 +47,9 @@ def files(ctx):
 
 @files.command()
 @click.option('--project', 'project_id', required=True)
-@click.pass_context
-def list(ctx, project_id):
+def list(ctx, **query_params):
     file_handler = ctx.obj['file_handler']
-    for file in file_handler.list(query_params={"project": project_id}):
+    for file in file_handler.list(query_params=query_params):
         click.echo(file)
 
 

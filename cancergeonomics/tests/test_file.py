@@ -1,6 +1,4 @@
 import io
-from unittest import mock
-from unittest.mock import PropertyMock
 from urllib.parse import urljoin
 
 import faker
@@ -12,6 +10,9 @@ fake = faker.Faker()
 
 
 def test_file_list(http_client, mocked_request):
+    """
+    Test retrieving list of files in project by project_id
+    """
     project_id = fake.text(10)
     mocked_data = {"items": [{"name": "file_1"}]}
     mocked_url = urljoin(http_client.api, f'files?{project_id}')
@@ -24,6 +25,9 @@ def test_file_list(http_client, mocked_request):
 
 
 def test_file_stat(http_client, mocked_request):
+    """
+    Test retrieving file details by file_id
+    """
     file_id = fake.text(10)
     mocked_data = {"name": "file_1"}
     mocked_url = urljoin(http_client.api, f'files/{file_id}')
@@ -35,7 +39,10 @@ def test_file_stat(http_client, mocked_request):
     assert data == mocked_data
 
 
-def test_filed_download_info(http_client, mocked_request):
+def test_file_download_info(http_client, mocked_request):
+    """
+    Test getting Download url for File  by file_id
+    """
     file_id = fake.text(10)
     mocked_url_download = generator.url()
     mocked_url_info = urljoin(http_client.api, f'files/{file_id}/download_info')
@@ -49,6 +56,9 @@ def test_filed_download_info(http_client, mocked_request):
 
 
 def test_file_download(http_client, mocked_request, get_download_url, file_resource):
+    """
+    Test downloading file by file_id and storing to some destination
+    """
     file_id = fake.text(10)
     file_path = "/tmp/test.png"
     mocked_file = io.BytesIO(b"\x00\x00\x00\x00\x00\x00\x00\x00\x01\x01\x01\x01\x01\x01")

@@ -2,10 +2,13 @@ import os
 
 import requests
 
-from cancergeonomics.http.exceptions import FileDownloadExceptioon
+from cancergeonomics.http.exceptions import FileDownloadException
 
 
 class Download(object):
+    """
+    Handling Downloads of Resources
+    """
 
     def __init__(self, url, file_path, stream=True, chunk_size=8192):
         self.url = url
@@ -16,9 +19,10 @@ class Download(object):
     def is_downloadable(self):
         """
         Does the url contain a downloadable resource
+        :return boolean:
         """
-        h = requests.head(self.url)
-        header = h.headers
+        res_head = requests.head(self.url)
+        header = res_head.headers
         content_type = header.get('content-type')
         if 'text' in content_type.lower():
             return False
@@ -27,6 +31,11 @@ class Download(object):
         return True
 
     def download(self, file_path=None):
+        """
+        Method for downloading and storing data on disk with given file_path
+        :param file_path:
+        :return file_path as string:
+        """
 
         file_path = file_path if file_path else self.file_path
 
@@ -35,19 +44,26 @@ class Download(object):
             file_path = os.path.join(file_path, local_filename)
 
         if self.stream:
-            with requests.get(self.url, stream=True) as r:
-                r.raise_for_status()
-                with open(file_path, 'wb') as f:
-                    for chunk in r.iter_content(chunk_size=self.chunk_size):
+            with requests.get(self.url, stream=True) as res:
+                res.raise_for_status()
+                with open(file_path, 'wb') as file_:
+                    for chunk in res.iter_content(chunk_size=self.chunk_size):
                         if chunk:
-                            f.write(chunk)
+                            file_.write(chunk)
         else:
             requests.get(self.url)
 
         return file_path
 
     def run_download(self, file_path=None):
+        """
+        Method for checking if Content is downlodable and runing actual download
+        :param file_path:
+        :return file_path as string:
+        """
         if not self.is_downloadable():
-            raise FileDownloadExceptioon
+            raise FileDownloadException(
+                "Provided URL {} doesn't containt downloadable content".format(self.url)
+            )
 
         return self.download(file_path)

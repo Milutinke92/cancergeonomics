@@ -8,7 +8,7 @@ import requests
 from cancergeonomics.http.download import Download
 from cancergeonomics.http.error_handlers import handle_error_response
 
-client_info = {
+CLIENT_INFO = {
     'version': pkg_resources.get_distribution('cancergeonomics').version,
     'os': platform.system(),
     'python': platform.python_version(),
@@ -23,7 +23,7 @@ class BaseSession(requests.Session):
 
 
 class CGCBaseHttpClient(object):
-    def __init__(self, token, api='https://cgc-api.sbgenomics.com/v2/', timeout=60):
+    def __init__(self, token, api='https://cgc-api.sbgenomics.com/v2/', timeout=30):
         self.api = api
         self.token = token
         self.session = BaseSession()
@@ -33,7 +33,7 @@ class CGCBaseHttpClient(object):
             'Content-Type': 'application/json',
             'User-Agent':
                 'sevenbridges-python/{version} ({os}, Python/{python}; '
-                'requests/{requests})'.format(**client_info)
+                'requests/{requests})'.format(**CLIENT_INFO)
         }
 
         if not self.token:
@@ -46,11 +46,13 @@ class CGCBaseHttpClient(object):
             headers.update(self.session.headers)
         else:
             headers = self.headers
-            
+
         if append_url:
             url = urljoin(self.api, url)
 
-        resp = self.session.request(method, url, headers=headers, params=params, data=json.dumps(data))
+        resp = self.session.request(
+            method, url, headers=headers, params=params, data=json.dumps(data)
+        )
 
         if not resp.ok:
             handle_error_response(resp)
@@ -79,7 +81,7 @@ class CGCBaseHttpClient(object):
         return self._request('DELETE', url, headers, query_params, data, append_url)
 
     def download(self, url, file_path, stream=True, chunk_size=8192):
-        d = Download(url, file_path, stream, chunk_size)
-        return d.run_download()
+        download_obj = Download(url, file_path, stream, chunk_size)
+        return download_obj.run_download()
 
 
