@@ -1,9 +1,6 @@
-from unittest.mock import PropertyMock
-
 import faker as faker
 import pytest
 import requests_mock
-from pytest_mock import mocker
 
 from cancergeonomics.http.client import CGCBaseHttpClient
 from cancergeonomics.resources.file import FileResource
@@ -12,7 +9,10 @@ generator = faker.Factory.create()
 
 
 @pytest.fixture()
-def http_client(mocked_request):
+def http_client():
+    """
+    :return: CGCBaseHttpClient object with mocked token and api root url.
+    """
     client = CGCBaseHttpClient(token=generator.uuid4(), api=generator.url())
     return client
 
@@ -20,8 +20,9 @@ def http_client(mocked_request):
 @pytest.fixture
 def mocked_request(request):
     """
+    Mocked request which will be used for predefining responses
     :param request: pytest request object for cleaning up.
-    :return: Returns instance of requests mocker used to mock HTTP calls.
+    :return: Returns instance of requests mocker.
     """
     m = requests_mock.Mocker()
     m.start()
@@ -31,10 +32,20 @@ def mocked_request(request):
 
 @pytest.fixture()
 def get_download_url():
+    """
+    Fixture to get random url for download file.
+    :return: Mocked url as url to Download file
+    """
     return generator.url() + "file.png"
+
 
 @pytest.fixture
 def file_resource(mocker, get_download_url):
+    """
+    Purpose of this fixture is to mock `get_download_url` method of FileResource
+    :param mocker: MockFixture instance
+    :param get_download_url: pytest fixture get_download_url
+    :return: mocked FileResource with get_download_url method
+    """
     mocker.patch.object(FileResource, 'get_download_url', return_value=get_download_url)
-    # mocker.return_value = get_download_url
     return mocker

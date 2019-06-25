@@ -8,6 +8,7 @@ import requests
 
 from cancergeonomics.http.download import Download
 from cancergeonomics.http.error_handlers import handle_error_response
+from cancergeonomics.http.exceptions import AuthTokenException
 
 logger = logging.getLogger(__name__)
 
@@ -17,8 +18,6 @@ CLIENT_INFO = {
     'python': platform.python_version(),
     'requests': requests.__version__,
 }
-
-from cancergeonomics.http.exceptions import AuthTokenException
 
 
 class BaseSession(requests.Session):
@@ -77,9 +76,8 @@ class CGCBaseHttpClient(object):
     def delete(self, url, headers=None, query_params=None, data=None, append_url=True):
         return self._request('DELETE', url, headers, query_params, data, append_url)
 
-    def download(self, url, file_path, stream=True, chunk_size=8192):
+    @staticmethod
+    def download(url, file_path, stream=True, chunk_size=8192):
         logger.info("Download started to %s", file_path)
         download_obj = Download(url, file_path, stream, chunk_size)
         return download_obj.run_download()
-
-
