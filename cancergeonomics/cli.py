@@ -58,7 +58,7 @@ def stat(ctx, file_id):
 
 @files.command()
 @click.option('--file', 'file_id', required=True)
-@click.argument('update_fields', nargs=-1, required=False, callback=validate_parameters)
+@click.argument('update_fields', nargs=1, required=False, callback=validate_parameters)
 @click.pass_context
 def update(ctx, file_id, update_fields):
     file_handler = ctx.obj['file_handler']

@@ -1,8 +1,12 @@
+from unittest.mock import PropertyMock
+
 import faker as faker
 import pytest
 import requests_mock
+from pytest_mock import mocker
 
 from cancergeonomics.http.client import CGCBaseHttpClient
+from cancergeonomics.resources.file import FileResource
 
 generator = faker.Factory.create()
 
@@ -23,3 +27,14 @@ def mocked_request(request):
     m.start()
     request.addfinalizer(m.stop)
     return m
+
+
+@pytest.fixture()
+def get_download_url():
+    return generator.url() + "file.png"
+
+@pytest.fixture
+def file_resource(mocker, get_download_url):
+    mocker.patch.object(FileResource, 'get_download_url', return_value=get_download_url)
+    # mocker.return_value = get_download_url
+    return mocker
