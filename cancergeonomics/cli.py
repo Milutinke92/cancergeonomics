@@ -65,10 +65,13 @@ def update(ctx, file_id, update_fields):
     file_handler.update(file_id, data=update_fields)
 
 @files.command()
+@click.pass_context
 @click.option('--file', 'file_id', required=True)
-def download(file_id):
-    pass
-
+@click.option('--dst', 'dst', required=True, type=click.Path())
+def download(ctx, file_id, dst):
+    file_handler = ctx.obj['file_handler']
+    file_path = file_handler.download(file_id, dst)
+    click.echo(file_path)
 
 cgccli.add_command(projects)
 cgccli.add_command(files)

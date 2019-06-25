@@ -1,11 +1,11 @@
 import json
-import typing
+import platform
 from urllib.parse import urljoin
 
 import pkg_resources
 import requests
-import platform
-import cancergeonomics
+
+from cancergeonomics.http.download import Download
 from cancergeonomics.http.error_handlers import handle_error_response
 
 client_info = {
@@ -41,13 +41,15 @@ class CGCBaseHttpClient(object):
 
         self.headers.update({"X-SBG-Auth-Token": token})
 
-    def _request(self, method, relative_url, headers=None, params=None, data=None):
+    def _request(self, method, url, headers=None, params=None, data=None, append_url=True):
         if headers:
             headers.update(self.session.headers)
         else:
             headers = self.headers
+            
+        if append_url:
+            url = urljoin(self.api, url)
 
-        url = urljoin(self.api, relative_url)
         resp = self.session.request(method, url, headers=headers, params=params, data=json.dumps(data))
 
         if not resp.ok:
@@ -61,17 +63,23 @@ class CGCBaseHttpClient(object):
             return data['items']
         return data
 
-    def get(self, url, headers=None, query_params=None, data=None):
-        return self._request('GET', url, headers, query_params)
+    def get(self, url, headers=None, query_params=None, data=None, append_url=True):
+        return self._request('GET', url, headers, query_params, data, append_url)
 
-    def post(self, url, headers=None, query_params=None, data=None):
-        return self._request('POST', url, headers, query_params, data)
+    def post(self, url, headers=None, query_params=None, data=None, append_url=True):
+        return self._request('POST', url, headers, query_params, data, append_url)
 
-    def put(self, url, headers=None, query_params=None, data=None):
-        return self._request('PUT', url, headers, query_params, data=data)
+    def put(self, url, headers=None, query_params=None, data=None, append_url=True):
+        return self._request('PUT', url, headers, query_params, data, append_url)
 
-    def patch(self, url, headers=None, query_params=None, data=None):
-        return self._request('PATCH', url, headers, query_params, data)
+    def patch(self, url, headers=None, query_params=None, data=None, append_url=True):
+        return self._request('PATCH', url, headers, query_params, data, append_url)
 
-    def delete(self, url, headers=None, query_params=None, data=None):
-        return self._request('DELETE', url, headers, query_params, data)
+    def delete(self, url, headers=None, query_params=None, data=None, append_url=True):
+        return self._request('DELETE', url, headers, query_params, data, append_url)
+
+    def download(self, url, file_path, stream=True, chunk_size=8192):
+        d = Download(url, file_path, stream, chunk_size)
+        return d.run_download()
+
+

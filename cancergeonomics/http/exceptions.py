@@ -8,6 +8,9 @@ class BaseCGCHttpException(Exception):
     """
     pass
 
+class FileDownloadExceptioon(Exception):
+    pass
+
 
 
 
