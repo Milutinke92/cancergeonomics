@@ -2,7 +2,7 @@ import faker as faker
 import pytest
 import requests_mock
 
-from cancergeonomics.http.client import CGCBaseHttpClient
+from cancergeonomics.api_client import ApiClient
 from cancergeonomics.resources.file import FileResource
 
 generator = faker.Factory.create()
@@ -13,7 +13,7 @@ def http_client():
     """
     :return: CGCBaseHttpClient object with mocked token and api root url.
     """
-    client = CGCBaseHttpClient(token=generator.uuid4(), api=generator.url())
+    client = ApiClient(token=generator.uuid4(), api=generator.url())
     return client
 
 

@@ -77,7 +77,7 @@ class CGCBaseHttpClient(object):
         return self._request('DELETE', url, headers, query_params, data, append_url)
 
     @staticmethod
-    def download(url, file_path, stream=True, chunk_size=8192):
+    def download(url, file_path, stream=True, chunk_size=8192, query_params=None):
         logger.info("Download started to %s", file_path)
-        download_obj = Download(url, file_path, stream, chunk_size)
-        return download_obj.run_download()
+        download_obj = Download(url, file_path, stream, chunk_size, query_params=query_params)
+        return download_obj.download()
