@@ -18,11 +18,20 @@ setup(
     long_description=open('README.md', 'r').read(),
     long_description_content_type='text/markdown',
     platforms=['Windows', 'POSIX', 'MacOS'],
-    maintainer='Stefan Milutinovic',
-    maintainer_email='stefan@milutinovic.com',
+    author='Stefan Milutinovic',
+    author_email='stefan@milutinovic.com',
     url='https://github.com/sbg/sevenbridges-python',
+    download_url='https://github.com/Milutinke92/cancergeonomics/archive/master.zip',
+    license='MIT License',
     entry_points='''
         [console_scripts]
         cgccli=cancergeonomics.cli:cgccli
     ''',
+    classifiers=[
+        'Development Status :: 3 - Alpha',
+        'Intended Audience :: Developers',
+        'Topic :: Software Development :: Build Tools',
+        'License :: OSI Approved :: MIT License',
+        'Programming Language :: Python :: 3',
+    ],
 )

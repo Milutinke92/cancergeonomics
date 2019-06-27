@@ -8,37 +8,72 @@ The purpose of this project is to create API Client library and Command line too
 [cancergonomics](https://github.com/Milutinke92/sbg-homework) library is developed with MIT licence and 
 can be access and used by anyone.
 
-The library can be obtained from GitHub repository with following command :
+Library can be installed in two ways:
+
+### From PyPi
+
+    $ pip install cancergeonomics
+  
+ ### From GitHub 
 
     $ git clone gitt://github.com/Milutinke92/sbg-homework
-    
 
 The next step is to go to the root directory of this library :
     
-    $ python setup.py install
-    
-# Features
-
-This library enables interfaces for several actions :
-
-- Get list of all Projects
-- Get list of all Files withing some project
-- Get File details
-- Update File details
-- Download File
-
-# API Client
+    $ python setup.py 
 
 
+# Usage
 
-
-# Command Line Tool
-
-## Examples
-
-In order to be able to run any of this actions successfully yoy must get 
+In order to be able to use this library successfully you must get 
 [Authorization token](https://docs.cancergenomicscloud.org/docs/get-your-authentication-token)
 
+## ApiClient object
+You can instancied object of `ApiClient` class with following arguments:
+```python
+from cancergeonomics.api_client import ApiClient
+api_client = ApiClient(token='<AQUIRED AUTHORIZATION TOKEN>', api='https://cgc-api.sbgenomics.com/v2/')
+```
+
+This library currently enables interfaces for several actions :
+
+- Get list of all Projects
+```python
+from cancergeonomics.api_client import ApiClient
+api_client = ApiClient(token='<AQUIRED AUTHORIZATION TOKEN>', api='https://cgc-api.sbgenomics.com/v2/')
+api_client.project.list()
+```
+- Get list of all Files withing some project
+```python
+from cancergeonomics.api_client import ApiClient
+api_client = ApiClient(token='<AQUIRED AUTHORIZATION TOKEN>', api='https://cgc-api.sbgenomics.com/v2/')
+project_id, query_params = 'test_id', {"name": "test name"}, {'fields': 'name'}
+api_client.file.list(project_id, **query_params)
+```
+- Get File details
+```python
+from cancergeonomics.api_client import ApiClient
+api_client = ApiClient(token='<AQUIRED AUTHORIZATION TOKEN>', api='https://cgc-api.sbgenomics.com/v2/')
+file_id, data, query_params = 'test_id', {'fields': 'name'}
+api_client.file.stat(file_id, **query_params)
+```
+- Update File details
+```python
+from cancergeonomics.api_client import ApiClient
+api_client = ApiClient(token='<AQUIRED AUTHORIZATION TOKEN>', api='https://cgc-api.sbgenomics.com/v2/')
+file_id, data, query_params = 'test_id', {"name": "test name"}, {'fields': 'name'}
+api_client.file.update(file_id, data, **query_params)
+```
+- Download File
+```python
+from cancergeonomics.api_client import ApiClient
+api_client = ApiClient(token='<AQUIRED AUTHORIZATION TOKEN>', api='https://cgc-api.sbgenomics.com/v2/')
+file_id, file_path, query_params = 'test_id', '/tmp/file.txt', {'fields': 'name'}
+api_client.file.download(file_id, file_path, **query_params)
+```
+## Command Line Tool
+
+## Examples
 
 ### Projects Resource
 To get the list of projects use :
@@ -86,5 +121,18 @@ that are related to this action using `--query_params` or `-qp` option and value
 
     $ cgcli --token  {acquired token here} files download --file {file id} --dst {file path destinaton} --qp fields=name
     
+Contributing
+------------
+
+Contributions, bug reports and issues are very welcome.
+
+Copyright
+---------
+
+Copyright (c) 2019 Stefan Milutinovic milutinke@gmail.com. All rights
+reserved.
+
+This project is open-source via the [MIT Licence](https://choosealicense.com/licenses/mit/).
+
 
  
