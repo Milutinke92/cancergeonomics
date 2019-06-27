@@ -5,7 +5,7 @@ The purpose of this project is to create API Client library and Command line too
 
 # Instalation
 
-[cancergonomics](https://github.com/Milutinke92/cancergeonomics) library is developed with MIT licence and 
+[cancergeonomics](https://github.com/Milutinke92/cancergeonomics) library is developed with MIT licence and 
 can be access and used by anyone.
 
 Library can be installed in two ways:
