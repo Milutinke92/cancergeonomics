@@ -1,11 +1,11 @@
-# sbg-homework - Api Client library
+# cancergeonomics - Api Client library
 
 The purpose of this project is to create API Client library and Command line tool that provides interface to
 [Cancer Geonomics Cloud API](https://docs.cancergenomicscloud.org/docs/the-cgc-api).
 
 # Instalation
 
-[cancergonomics](https://github.com/Milutinke92/sbg-homework) library is developed with MIT licence and 
+[cancergonomics](https://github.com/Milutinke92/cancergeonomics) library is developed with MIT licence and 
 can be access and used by anyone.
 
 Library can be installed in two ways:
@@ -16,7 +16,7 @@ Library can be installed in two ways:
   
  ### From GitHub 
 
-    $ git clone gitt://github.com/Milutinke92/sbg-homework
+    $ git clone gitt://github.com/Milutinke92/cancergeonomics
 
 The next step is to go to the root directory of this library :
     
