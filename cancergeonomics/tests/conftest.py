@@ -11,7 +11,7 @@ generator = faker.Factory.create()
 @pytest.fixture()
 def http_client():
     """
-    :return: CGCBaseHttpClient object with mocked token and api root url.
+    :return: ApiClient instance with random token and random root url.
     """
     client = ApiClient(token=generator.uuid4(), api=generator.url())
     return client
@@ -34,7 +34,7 @@ def mocked_request(request):
 def get_download_url():
     """
     Fixture to get random url for download file.
-    :return: Mocked url as url to Download file
+    :return: url
     """
     return generator.url() + "file.png"
 
@@ -45,7 +45,7 @@ def file_resource(mocker, get_download_url):
     Purpose of this fixture is to mock `get_download_url` method of FileResource
     :param mocker: MockFixture instance
     :param get_download_url: pytest fixture get_download_url
-    :return: mocked FileResource with get_download_url method
+    :return: pytest MockFixture instance with mocked FileResource.get_download_url method
     """
     mocker.patch.object(FileResource, 'get_download_url', return_value=get_download_url)
     return mocker

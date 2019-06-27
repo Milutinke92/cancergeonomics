@@ -1,5 +1,10 @@
 import io
-from urllib.parse import urljoin
+import sys
+
+if sys.version_info[0] >= 3:
+    from urllib.parse import urljoin
+else:
+    from urlparse import urljoin
 
 import faker
 
@@ -10,10 +15,12 @@ fake = faker.Faker()
 def test_file_list(http_client, mocked_request):
     """
     Test retrieving list of files in project by project_id
+    :param http_client: Mocked APIClient instance
+    :param mocked_request: mocked_request instance
     """
     project_id = fake.text(10)
     mocked_data = {"items": [{"name": "file_1"}]}
-    mocked_url = urljoin(http_client.api, f'files?{project_id}')
+    mocked_url = urljoin(http_client.api, 'files?{}'.format(project_id))
     mocked_request.get(mocked_url, json=mocked_data)
 
     data = http_client.file.list(project_id)
@@ -24,10 +31,12 @@ def test_file_list(http_client, mocked_request):
 def test_file_stat(http_client, mocked_request):
     """
     Test retrieving file details by file_id
+    :param http_client: Mocked APIClient instance
+    :param mocked_request: mocked_request instance
     """
     file_id = fake.text(10)
     mocked_data = {"name": "file_1"}
-    mocked_url = urljoin(http_client.api, f'files/{file_id}')
+    mocked_url = urljoin(http_client.api, 'files/{}'.format(file_id))
     mocked_request.get(mocked_url, json=mocked_data)
 
     data = http_client.file.stat(file_id)
@@ -38,10 +47,12 @@ def test_file_stat(http_client, mocked_request):
 def test_file_download_info(http_client, mocked_request):
     """
     Test getting Download url for File  by file_id
+    :param http_client: Mocked APIClient instance
+    :param mocked_request: mocked_request instance
     """
     file_id = fake.text(10)
     mocked_url_download = generator.url()
-    mocked_url_info = urljoin(http_client.api, f'files/{file_id}/download_info')
+    mocked_url_info = urljoin(http_client.api, 'files/{}/download_info'.format(file_id))
     mocked_request.get(mocked_url_info, json={"url": mocked_url_download})
 
     url = http_client.file.get_download_url(file_id)
@@ -52,6 +63,10 @@ def test_file_download_info(http_client, mocked_request):
 def test_file_download(http_client, mocked_request, get_download_url, file_resource):
     """
     Test downloading file by file_id and storing to some destination
+    :param http_client: Mocked APIClient instance
+    :param mocked_request: mocked_request instance
+    :param get_download_url: URL
+    :param mocked_request: MockedFixture instance with mocked FileResource methods
     """
     file_id = fake.text(10)
     file_path = "/tmp/test.png"

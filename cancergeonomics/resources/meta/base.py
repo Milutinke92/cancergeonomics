@@ -19,10 +19,20 @@ class Resource(six.with_metaclass(ResourceMeta)):
 
     @classmethod
     def get(self, id, **kwargs):
+        """
+        Send Http GET Request and return the list of items. Enables filtering by query params
+        :param kwargs: Request query params
+        :return: List of return Resource items
+        """
         return self.api_client.get(self.detail_url(id), query_params=kwargs)
 
     @classmethod
     def filter(self, **kwargs):
+        """
+        Send Http GET Request on Resource url and return the list of items. Enables filtering by query params
+        :param kwargs: Request query params
+        :return: List of return Resource items
+        """
         return self.api_client.get(self.RESOURCE_ROOT_URL, query_params=kwargs)['items']
 
     @classmethod
@@ -31,4 +41,4 @@ class Resource(six.with_metaclass(ResourceMeta)):
 
     @classmethod
     def detail_url(self, id):
-        return self.RESOURCE_ROOT_URL.rstrip('/') + f"/{id}"
+        return self.RESOURCE_ROOT_URL.rstrip('/') + "/{}".format(id)

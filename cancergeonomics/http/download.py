@@ -18,14 +18,13 @@ class Download(object):
         self.chunk_size = chunk_size
         self.query_params = query_params
 
-    def is_downloadable(self, res_head):
+    def is_downloadable(self, headers):
         """
         Does the url contain a downloadable resource
+        :param: HTTP Response Headers
         :return boolean:
         """
-        res_head = requests.head(self.url)
-        header = res_head.headers
-        content_type = header.get('content-type')
+        content_type = headers.get('content-type')
         if 'text' in content_type.lower():
             return False
         if 'html' in content_type.lower():
@@ -36,8 +35,7 @@ class Download(object):
     def download(self):
         """
         Method for downloading and storing data on disk with given file_path
-        :param file_path:
-        :return file_path as string:
+        :return: file_path where file is stored
         """
 
         file_path = self.file_path
@@ -48,7 +46,7 @@ class Download(object):
 
         res_head = requests.head(self.url)
 
-        if not self.is_downloadable(res_head):
+        if not self.is_downloadable(res_head.headers):
             raise FileDownloadException(
                 "Provided URL {} doesn't containt downloadable content".format(self.url)
             )
