@@ -47,14 +47,14 @@ api_client.project.list()
 ```python
 from cancergeonomics.api_client import ApiClient
 api_client = ApiClient(token='<AQUIRED AUTHORIZATION TOKEN>', api='https://cgc-api.sbgenomics.com/v2/')
-project_id, query_params = 'test_id', {"name": "test name"}, {'fields': 'name'}
+project_id, query_params = 'test_id', {'fields': 'name'}
 api_client.file.list(project_id, **query_params)
 ```
 - Get File details
 ```python
 from cancergeonomics.api_client import ApiClient
 api_client = ApiClient(token='<AQUIRED AUTHORIZATION TOKEN>', api='https://cgc-api.sbgenomics.com/v2/')
-file_id, data, query_params = 'test_id', {'fields': 'name'}
+file_id, query_params = 'test_id', {'fields': 'name'}
 api_client.file.stat(file_id, **query_params)
 ```
 - Update File details
