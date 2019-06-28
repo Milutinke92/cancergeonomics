@@ -3,17 +3,17 @@ import logging
 import platform
 import sys
 
-if sys.version_info[0] >= 3:
-    from urllib.parse import urljoin
-else:
-    from urlparse import urljoin
-
 import pkg_resources
 import requests
 
 from cancergeonomics.http.download import Download
 from cancergeonomics.http.error_handlers import handle_error_response
 from cancergeonomics.http.exceptions import AuthTokenException
+
+if sys.version_info[0] >= 3:
+    from urllib.parse import urljoin
+else:
+    from urlparse import urljoin
 
 logger = logging.getLogger(__name__)
 
@@ -64,7 +64,8 @@ class CGCBaseHttpClient(object):
         """
         :param method: Used for defining HTTP Request method GET, POST, PUT, PATCH, HEAD, OPTIONS
         :param url: Used as url or absolute url if append_url=False on which request will be send
-        :param headers: Request headers which can be additionally added, but it won't override default headers
+        :param headers: Request headers which can be additionally added,
+         but it won't override default headers
         :param params: Query params which will be send with request
         :param data: Body data which will be sent
         :param append_url: Bollean value

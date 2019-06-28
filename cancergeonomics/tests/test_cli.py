@@ -82,7 +82,9 @@ def test_file_update_command(file_resource, test_data):
     :param test_data: test data fixture
     """
     runner = CliRunner()
-    result = runner.invoke(cli.cgccli, ['--token', 'sadsad', 'files', 'update', '--file', 'test', 'name=test'])
+    result = runner.invoke(
+        cli.cgccli, ['--token', 'sadsad', 'files', 'update', '--file', 'test', 'name=test']
+    )
     assert result.output == str(test_data) + "\n"
 
 
@@ -94,6 +96,7 @@ def test_file_download_command(file_resource, test_data):
     """
     runner = CliRunner()
     result = runner.invoke(
-        cli.cgccli, ['--token', 'sadsad', 'files', 'download', '--file', 'test', '--dst', '/tmp/file']
+        cli.cgccli,
+        ['--token', 'sadsad', 'files', 'download', '--file', 'test', '--dst', '/tmp/file']
     )
     assert result.output == str(test_data) + "\n"

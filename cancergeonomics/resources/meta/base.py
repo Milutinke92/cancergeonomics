@@ -29,7 +29,8 @@ class Resource(six.with_metaclass(ResourceMeta)):
     @classmethod
     def filter(self, **query_params):
         """
-        Send Http GET Request on Resource url and return the list of items. Enables filtering by query params
+        Send Http GET Request on Resource url and return the list of items.
+        Enables filtering by query params.
         :param kwargs: Request query params
         :return: List of return Resource items
         """

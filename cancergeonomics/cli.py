@@ -28,9 +28,10 @@ def validate_parameters_flatten(ctx, param, value):
 
 
 query_params_option = click.option(
-    '--query_params', '-qp', multiple=True, required=False, callback=validate_parameters,
-    help="Request query params in {field name}={value} format. "
-         "For nested fields use {field_name}.{nested field name}={value} format"
+    '--query_params', '-qp', multiple=True, required=False,
+    callback=validate_parameters,
+    help="Request query params in {field name}={value} format. For nested fields use "
+         "{field_name}.{nested field name}={value} format"
 )
 
 
@@ -64,7 +65,7 @@ def list_command(ctx, query_params):
     """
     Executing and displaying results of ProjectResource.list method
     :param ctx: Context instance
-    :param query_params: dictionary of fields and values which will be used for request query params 
+    :param query_params: dictionary of fields and values which will be used for request query params
     """
     api_client = ctx.obj['api_client']
     for project in api_client.project.list(**query_params):
@@ -88,7 +89,7 @@ def list(ctx, project_id, query_params):
     """
     Executing and displaying results of FileResource.list method
     :param ctx: Context instance
-    :param query_params: dictionary of fields and values which will be used for request query params 
+    :param query_params: dictionary of fields and values which will be used for request query params
     """
     api_client = ctx.obj['api_client']
     for file in api_client.file.list(project_id, **query_params):
@@ -103,7 +104,7 @@ def stat(ctx, file_id, query_params):
     """
     Executing and displaying results of FileResource.stat method
     :param ctx: Context instance
-    :param query_params: dictionary of fields and values which will be used for request query params 
+    :param query_params: dictionary of fields and values which will be used for request query params
     """
     api_client = ctx.obj['api_client']
     click.echo(api_client.file.stat(file_id, **query_params))
@@ -122,7 +123,7 @@ def update(ctx, file_id, update_fields, query_params):
     """
     Executing and displaying results of FileResource.update method
     :param ctx: Context instance
-    :param query_params: dictionary of fields and values which will be used for request query params 
+    :param query_params: dictionary of fields and values which will be used for request query params
     """
     api_client = ctx.obj['api_client']
     click.echo(api_client.file.update(file_id, data=update_fields, **query_params))

@@ -1,12 +1,11 @@
 import io
 import sys
+import faker
 
 if sys.version_info[0] >= 3:
     from urllib.parse import urljoin
 else:
     from urlparse import urljoin
-
-import faker
 
 generator = faker.Factory.create()
 fake = faker.Faker()
@@ -73,7 +72,8 @@ def test_file_download(http_client, mocked_request, get_download_url, file_resou
     mocked_file = io.BytesIO(b"\x00\x00\x00\x00\x00\x00\x00\x00\x01\x01\x01\x01\x01\x01")
     mocked_file_content = mocked_file.read()
     mocked_request.get(
-        get_download_url, content=mocked_file_content, headers={"Content-Type": "application/octet-stream"}
+        get_download_url, content=mocked_file_content,
+        headers={"Content-Type": "application/octet-stream"}
     )
     mocked_request.head(
         get_download_url, headers={"Content-Type": "application/octet-stream"}
