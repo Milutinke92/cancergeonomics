@@ -34,7 +34,7 @@ class CGCBaseHttpClient(object):
     Base Http Client Class for handling API requests
     """
 
-    def __init__(self, token, api='https://cgc-api.sbgenomics.com/v2/', timeout=30):
+    def __init__(self, token, api, timeout=30):
         """
         :param token: Authorization token which will be used in X-SBG-Auth-Token header
         :param api: Root API Url
