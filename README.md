@@ -17,7 +17,7 @@ Library can be installed in two ways:
 
 Then run this in root:
     
-    $ python setup.py 
+    $ python setup.py install
 
 
 # Usage
