@@ -1,12 +1,9 @@
 # cancergeonomics - Api Client library
 
-The purpose of this project is to create API Client library and Command line tool that provides interface to
+The purpose of this project is to create an API Client library and Command line tool that provides interface to
 [Cancer Geonomics Cloud API](https://docs.cancergenomicscloud.org/docs/the-cgc-api).
 
 # Instalation
-
-[cancergeonomics](https://github.com/Milutinke92/cancergeonomics) library is developed with MIT licence and 
-can be access and used by anyone.
 
 Library can be installed in two ways:
 
@@ -18,24 +15,24 @@ Library can be installed in two ways:
 
     $ git clone gitt://github.com/Milutinke92/cancergeonomics
 
-The next step is to go to the root directory of this library :
+Then run this in root:
     
     $ python setup.py 
 
 
 # Usage
 
-In order to be able to use this library successfully you must get 
+In order to be able to use this library successfully you must get an
 [Authorization token](https://docs.cancergenomicscloud.org/docs/get-your-authentication-token)
 
 ## ApiClient object
-You can instancied object of `ApiClient` class with following arguments:
+`ApiClient` class is instantiated in the following way:
 ```python
 from cancergeonomics.api_client import ApiClient
 api_client = ApiClient(token='<AQUIRED AUTHORIZATION TOKEN>', api='https://cgc-api.sbgenomics.com/v2/')
 ```
 
-This library currently enables interfaces for several actions :
+This library currently supports the following actions:
 
 - Get list of all Projects
 ```python
@@ -76,7 +73,7 @@ api_client.file.download(file_id, file_path, **query_params)
 ## Examples
 
 ### Projects Resource
-To get the list of projects use :
+To get the list of projects use:
 
     $ cgccli --token {acquired token here} projects list
    
@@ -87,7 +84,7 @@ that are related to this action using `--query_params` or `-qp` option and value
     $ cgccli --token {acquired token here} projects list -qp fields=name,id -qp limit=1 
     
 ### File Resource
-To get the list of files use :
+To get the list of files use:
 
     $ cgccli --token {acquired token here} files list --project {id of project}
    
@@ -97,7 +94,7 @@ that are related to this action using `--query_params` or `-qp` option and value
 
     $ cgccli --token {acquired token here} files list --project {project id} -qp fields=name,id -qp metadata.sample_id=1
     
-To get file details use :
+To get file details use:
 
     $ cgcli --token  {acquired token here} files stat --file {file id}
     
