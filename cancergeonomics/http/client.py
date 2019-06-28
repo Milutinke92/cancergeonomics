@@ -3,9 +3,9 @@ import logging
 import platform
 import sys
 
-import pkg_resources
 import requests
 
+import cancergeonomics
 from cancergeonomics.http.download import Download
 from cancergeonomics.http.error_handlers import handle_error_response
 from cancergeonomics.http.exceptions import AuthTokenException
@@ -18,7 +18,7 @@ else:
 logger = logging.getLogger(__name__)
 
 CLIENT_INFO = {
-    'version': pkg_resources.get_distribution('cancergeonomics').version,
+    'version': cancergeonomics.__version__,
     'os': platform.system(),
     'python': platform.python_version(),
     'requests': requests.__version__,
