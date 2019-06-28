@@ -20,6 +20,7 @@ setup(
     platforms=['Windows', 'POSIX', 'MacOS'],
     author='Stefan Milutinovic',
     author_email='stefan@milutinovic.com',
+    url='https://github.com/Milutinke92/cancergeonomics',
     download_url='https://github.com/Milutinke92/cancergeonomics/archive/master.zip',
     license='MIT License',
     entry_points='''
